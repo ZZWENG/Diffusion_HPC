@@ -17,14 +17,13 @@ pip install -r requirements.txt
 ### Download model data
 Please download VPoser weights [(`V02_05`)](https://smpl-x.is.tue.mpg.de/) and [SMPL](https://smpl.is.tue.mpg.de) model weights from their websites and put under `./data`.
 
-*Note: If only running demo code, only `smpl` and `V02_05` are needed. If doing evaluation and downstream, see the step below.*
+*Note: Only `smpl` and `V02_05` are needed for running demo code. If doing evaluation and downstream experiments, see the step below.*
 
 ### Optional: Download data and model checkpoints.
-#### 1. Download `data.zip` and unzip. 
-`data.zip` contains 
-- Finetuned HMR model checkpoints
-- EFT fittings for SMART.
-- Weghts for finetuned Stable Diffusion (used for Table 2).
+#### 1. Download models from [Google Drive](https://drive.google.com/drive/folders/1xZEPIWC2i1SNjZwVHpKh4rVAWHPbktz4?usp=sharing). It contains
+- Finetuned HMR model checkpoints (under `checkpoints`)
+- EFT fittings for SMART. (under `eft_smart`)
+- Weghts for finetuned Stable Diffusion (used for Table 2). (under `sd_ft_mpii` and `sd_ft_smart`)
 
 #### 2. Download MPII, SMART, and SkiPose.
 Download [MPII](http://human-pose.mpi-inf.mpg.de/#download), [SMART](https://github.com/ChenFengYe/SportsCap), and [SkiPose](https://www.epfl.ch/labs/cvlab/data/ski-poseptz-dataset/) datasets and put them under `./data`.
@@ -113,7 +112,7 @@ python generate_dataset.py --action "an athlete doing gymnastics on a balance be
 To generate data for SkiPose,
 ```
 ACTION=ski
-GEN_PATH=./gen_data/ski_400_rg
+GEN_PATH=./gen_data/ski_500_rg
 
 python generate_dataset.py --action "skiing" --use_real_guide --use_random_latents_for_human --out_path $GEN_PATH --apply_pose_aug --add_blur --real_guidance_action ${ACTION} --rg_num_samples 500
 ```

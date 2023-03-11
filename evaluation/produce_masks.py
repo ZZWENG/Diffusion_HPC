@@ -1,5 +1,5 @@
 """Produce human masks and save them to disk. """
-import os
+import os, sys
 import PIL
 import numpy as np
 from tqdm import tqdm
@@ -33,7 +33,7 @@ class MeanAccumulator:
         return self.sum / self.count
 
 
-def save_human_masks(image, acc, predictor, out_folder, file):
+def save_human_masks_single_person(image, acc, predictor, out_folder, file):
     """Get human masks from an image. """
     image_size = image.size[0]
     predictor = get_mask_rcnn_predictor()
@@ -64,7 +64,7 @@ def save_human_masks(image, acc, predictor, out_folder, file):
 
 
 
-def save_human_masks_(image, acc, predictor, out_folder, file):
+def save_human_masks(image, acc, predictor, out_folder, file):
     """Get human masks from an image. """
     image_size = image.size[0]
     predictor = get_mask_rcnn_predictor()
@@ -90,45 +90,27 @@ def save_human_masks_(image, acc, predictor, out_folder, file):
 def process_folder(folder, out_folder):
     if not os.path.exists(out_folder):
         os.makedirs(out_folder)
-
+    is_single_person = 'smart' in folder
     files = os.listdir(folder)
     predictor = get_mask_rcnn_predictor()
     acc = MeanAccumulator()
     for file in tqdm(files, desc='Processing images'):
-        if file.startswith('.'): continue
-        if file.endswith('jsonl'): continue
+        if file.startswith('.') or file.endswith('jsonl'): continue
         image = PIL.Image.open(os.path.join(folder, file)).resize((299, 299))
-        save_human_masks(image, acc, predictor, out_folder, file)
-        # import pdb; pdb.set_trace()
+        if is_single_person:
+            save_human_masks_single_person(image, acc, predictor, out_folder, file)
+        else:
+            save_human_masks(image, acc, predictor, out_folder, file)
 
     print(f'Average person score: {acc.mean():.3f}')
     print(f'Number of persons: {acc.count}')
 
 if __name__ == '__main__':
-    import sys
     path = sys.argv[1]
     if path.endswith('/'): path = path[:-1]
+    
     print(path)
     process_folder(
         path,
-        path + '_masks_ind'
+        path + '_masked'
     )
-    # for variant in ['stable_diffusion', 'ours']:
-    #     process_folder(
-    #         f'/oak/stanford/groups/syyeung/zzweng/sportscap_quant_eval_nofg/{variant}',
-    #         f'/oak/stanford/groups/syyeung/zzweng/sportscap_quant_eval_nofg/{variant}_masks_ind'
-    #     ) 
-        
-        # process_folder(
-        #     f'/oak/stanford/groups/syyeung/lmbravo/results/human_diffusion/quant_text_eval_templatecap_10k/{variant}', 
-        #     f'/oak/stanford/groups/syyeung/zzweng/laura_split/{variant}_masks_ind')
-    
-    # process_folder(
-    #     '/oak/stanford/groups/syyeung/zzweng/evaluation/mpii', 
-    #     '/oak/stanford/groups/syyeung/zzweng/evaluation/mpii_masked_by_maskrcnn_ind')  # For Table 1: text-conditioned comparison.
-
-    # variant = 'ours_ft'
-    # process_folder(
-    #     f'/oak/stanford/groups/syyeung/zzweng/hmr_eval/metrics_eval/{variant}',
-    # )
-
