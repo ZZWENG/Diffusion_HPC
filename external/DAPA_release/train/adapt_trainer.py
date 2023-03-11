@@ -43,7 +43,7 @@ class AdaptTrainer(Trainer):
         self.focal_length = constants.FOCAL_LENGTH
         self.summary_writer = wandb.init(
             project=self.options.wandb_project, name=self.options.name, 
-            entity='zzweng', config=vars(self.options), group=date.today().strftime("%B %d"))
+            config=vars(self.options), group=date.today().strftime("%B %d"))
 
         # Initialize SMPLify fitting module
         self.smplify = SMPLify(step_size=1e-2, batch_size=self.options.batch_size,
