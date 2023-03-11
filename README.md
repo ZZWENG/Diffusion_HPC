@@ -137,7 +137,7 @@ First, set up DAPA's environment following their instructions. Then do to the DA
 cd external/DAPA_release
 conda activate dapa
 ```
-See `./external/DAPA_release/scripts/demo.sh` for example commands for launching SPIN/DAPA/DiffusionHPC finetuning comparisons.
+See `./external/DAPA_release/scripts/finetune_demo.sh` for example commands for launching SPIN/DAPA/DiffusionHPC finetuning comparisons.
 
 ### Evaluate finetuned HMR models.
 Metrics should be printed to `wandb` already. Alternatively, use `eval_diffusion.py` to evaluate a given checkpoint.
