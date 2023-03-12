@@ -60,9 +60,6 @@ class MyPipeline(StableDiffusionDepth2ImgPipeline):
 
         # 5. Preprocess image
         image = preprocess(image)
-        # # import pdb; pdb.set_trace()
-        # depth_mask[0, 0, 35:40, :30] += 0.3  # see how sensitive the model is to the depth map
-        # depth_mask = torch.clamp(depth_mask, 0, 1)
         depth_array = ((depth_mask[0,0].cpu().numpy() + 1) * 127.5).astype(np.uint8)
 
         # 6. Set timesteps
@@ -143,22 +140,3 @@ def prepare_mask(mask_image):
     mask[mask >= 0.5] = 1
     mask = torch.from_numpy(mask)
     return mask
-
-def get_random_latents(args, generator):
-    latents = None
-    seeds = []
-    for _ in range(args.num_images):
-        # Get a new random seed, store it and use it as the generator state
-        seed = generator.seed()
-        seeds.append(seed)
-        generator = generator.manual_seed(seed)
-        
-        image_latents = torch.randn(
-            (1, 4, args.height // 8, args.width // 8),
-            generator = generator,
-            device = device
-        )
-        latents = image_latents if latents is None else torch.cat((latents, image_latents))
-        # latents should have shape (num_images, 4, 64, 64) in this case
-    return latents
-
