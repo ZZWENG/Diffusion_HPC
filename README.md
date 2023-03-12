@@ -20,7 +20,7 @@ Please download VPoser weights [(`V02_05`)](https://smpl-x.is.tue.mpg.de/) and [
 *Note: Only `smpl` and `V02_05` are needed for running demo code. If doing evaluation and downstream experiments, see the step below.*
 
 ### Optional: Download data and model checkpoints.
-#### 1. Download models from [Google Drive](https://drive.google.com/drive/folders/1xZEPIWC2i1SNjZwVHpKh4rVAWHPbktz4?usp=sharing). It contains
+#### 1. Download models from [Google Drive](https://drive.google.com/drive/folders/1XaZ-_Q40tCAJzUotCzXG64hTHN3TYSxL?usp=sharing). It contains
 - Finetuned HMR model checkpoints (under `checkpoints`)
 - EFT fittings for SMART. (under `eft_smart`)
 - Weghts for finetuned Stable Diffusion (used for Table 2). (under `sd_ft_mpii` and `sd_ft_smart`)
